@@ -2,4 +2,8 @@
 # IDE
 .idea
 
+# Expo build
+.expo
+
+# Deps
 node_modules
