@@ -1,7 +1,7 @@
 type NavParamsMap = {
 	Home: {},
 	Route: { routeId: string },
-	Stop: {},
+	Stop: { stopId: string },
 	Trip: {}
 }
 

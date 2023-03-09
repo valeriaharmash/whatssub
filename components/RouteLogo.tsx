@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 
 interface P {
 	content: string
-	onPress: () => void
+	onPress?: () => void
 	color: string
 	textColor: string
 }
@@ -32,6 +32,7 @@ interface P {
 const RouteLogo: FC<P> = ({content, onPress, color, textColor}) => {
 
 	return <TouchableOpacity
+		disabled={!onPress}
 		onPress={onPress}
 		style={[styles.container, {backgroundColor: `#${color}`}]}>
 		<Text style={[styles.text, {color: "white"}]}>{content}</Text>

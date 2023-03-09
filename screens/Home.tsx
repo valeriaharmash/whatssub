@@ -1,11 +1,12 @@
 import React, {FC, useEffect, useState} from 'react'
 import {StyleSheet, View} from "react-native";
-import axios, {AxiosResponse} from 'axios';
+import {AxiosResponse} from 'axios';
 import {ListRoutesResponse, Route} from "../types/api";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {RouteProp} from '@react-navigation/native'
 import {NavParamsMap} from "../navigation/navigation";
 import RouteLogo from "../components/RouteLogo";
+import client from "../apis/axios";
 
 const styles = StyleSheet.create({
 	container: {
@@ -41,7 +42,7 @@ const Home: FC<P> = ({navigation, route}) => {
 
 	useEffect(() => {
 		navigation.addListener("focus", () => {
-			axios.get('https://realtimerail.nyc/transiter/v0.6/systems/us-ny-subway/routes?skip_service_maps=true')
+			client.get('/transiter/v0.6/systems/us-ny-subway/routes?skip_service_maps=true')
 				.then((response: AxiosResponse) => {
 					const data: ListRoutesResponse = response.data
 					const routesMap: Map<string, Route> = data.routes.reduce((acc, route) => {
@@ -55,10 +56,11 @@ const Home: FC<P> = ({navigation, route}) => {
 
 	if (!routes) return null
 
-	let grid = layout.map((row) => {
-			return <View style={styles.row}>{row.map((routeId, idx) => {
+	let grid = layout.map((row, idx) => {
+			return <View key={idx} style={styles.row}>{row.map((routeId, idx) => {
 				let route = routes.get(routeId)!
 				return <RouteLogo
+					key={routeId}
 					content={route.shortName!}
 					onPress={() => navigation.navigate("Route", {routeId: route.id})}
 					color={route.color} textColor={route.textColor}
