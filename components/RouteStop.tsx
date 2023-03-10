@@ -1,21 +1,23 @@
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {FC} from "react";
-import {Stop_Reference} from "../types/api";
+import {screenWidth, sharedStyles} from "../assets/styles";
 
 interface P {
 	color: string
-	stop: Stop_Reference
+	name: string
 	onPress?: () => void
 	style: any
+	time?: string
+	lineStyle?: boolean
 }
 
 const styles = StyleSheet.create({
 	container: {
-		display: 'flex',
-		flexDirection: "row",
-		width: 300
+		height: 60,
+		width: screenWidth * 0.79,
 	},
 	name: {
+		alignSelf: "center",
 		textAlign: 'center',
 		color: "black",
 		fontStyle: "italic",
@@ -39,7 +41,7 @@ const styles = StyleSheet.create({
 	},
 	point: {
 		left: 5,
-		top: 10,
+		top: 25,
 		backgroundColor: "white",
 		width: 10,
 		height: 10,
@@ -51,15 +53,15 @@ const styles = StyleSheet.create({
 	}
 })
 
-const RouteStop: FC<P> = ({stop, color, onPress, style}) => {
+const RouteStop: FC<P> = ({name, color, onPress, style, time, lineStyle}) => {
 	return (
-		<TouchableOpacity style={[styles.container, style]} onPress={onPress}>
-			{/*<div className="time">{props.time}</div>*/}
-			<View style={styles.map}>
-				<View style={[styles.line, {backgroundColor: `#${color}`}]}/>
-				<View style={styles.point}/>
-			</View>
-			<Text style={styles.name}>{stop.name}</Text>
+		<TouchableOpacity style={[sharedStyles.row, styles.container, style]} onPress={onPress}>
+			<Text>{time}</Text>
+			{lineStyle && <View style={styles.map}>
+              <View style={[styles.line, {backgroundColor: `#${color}`}]}/>
+              <View style={styles.point}/>
+            </View>}
+			<Text style={styles.name}>{name}</Text>
 		</TouchableOpacity>
 	)
 }

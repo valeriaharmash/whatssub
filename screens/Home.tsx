@@ -1,25 +1,14 @@
 import React, {FC, useEffect, useState} from 'react'
-import {StyleSheet, View} from "react-native";
+import {View} from "react-native";
 import {AxiosResponse} from 'axios';
 import {ListRoutesResponse, Route} from "../types/api";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {RouteProp} from '@react-navigation/native'
 import {NavParamsMap} from "../navigation/navigation";
-import RouteLogo from "../components/RouteLogo";
+import RouteLogo from "../components/shared/RouteLogo";
+import Container from "../components/shared/Container"
 import client from "../apis/axios";
-
-const styles = StyleSheet.create({
-	container: {
-		display: "flex",
-		justifyContent: "space-around",
-		alignItems: "center",
-		margin: 10
-	},
-	row: {
-		display: "flex",
-		flexDirection: "row"
-	}
-})
+import {sharedStyles} from "../assets/styles";
 
 interface P {
 	navigation: StackNavigationProp<NavParamsMap, 'Home'>
@@ -56,14 +45,15 @@ const Home: FC<P> = ({navigation, route}) => {
 
 	if (!routes) return null
 
+
 	let grid = layout.map((row, idx) => {
-			return <View key={idx} style={styles.row}>{row.map((routeId, idx) => {
+			return <View key={idx} style={sharedStyles.row}>{row.map((routeId, idx) => {
 				let route = routes.get(routeId)!
 				return <RouteLogo
+					description={(routeId === "H" || routeId === "FS" || routeId === "GS") ? route.longName : undefined}
 					key={routeId}
-					content={route.shortName!}
+					routeId={routeId}
 					onPress={() => navigation.navigate("Route", {routeId: route.id})}
-					color={route.color} textColor={route.textColor}
 				/>
 			})}
 			</View>
@@ -71,9 +61,9 @@ const Home: FC<P> = ({navigation, route}) => {
 	)
 
 	return (
-		<View style={styles.container}>
+		<Container>
 			{grid}
-		</View>
+		</Container>
 	)
 }
 
