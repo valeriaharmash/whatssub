@@ -1,14 +1,12 @@
-import React, {FC, useEffect, useState} from "react";
-import {ScrollView, View} from "react-native";
-import {StackNavigationProp} from "@react-navigation/stack";
-import {RouteProp} from "@react-navigation/native";
-import {NavParamsMap} from "../navigation/navigation";
-import {Route as RouteResponse} from "../types/api";
+import React, { FC, useEffect, useState } from "react";
+import { ScrollView, View } from "react-native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RouteProp } from "@react-navigation/native";
+import { NavParamsMap } from "../navigation";
+import { Route as RouteResponse } from "../types";
 import client from "../apis/axios";
-import RouteStop from "../components/RouteStop";
-import RouteLogoImg from "../components/shared/RouteLogoImg";
-import Container from "../components/shared/Container"
-import {colors} from "../assets/styles";
+import { Container, RouteLogoImg, RouteStop } from "../components";
+import { colors } from "../assets/styles";
 
 interface P {
 	navigation: StackNavigationProp<NavParamsMap, 'Route'>
@@ -18,12 +16,12 @@ interface P {
 const Route: FC<P> = ({navigation, route}) => {
 	const {routeId} = route.params
 	const [singleRoute, setSingleRoute] = useState<null | RouteResponse>(null);
+
 	useEffect(() => {
 		navigation.addListener("focus", async () => {
 			const {data}: { data: RouteResponse } = await client.get(`/transiter/v0.6/systems/us-ny-subway/routes/${routeId}`)
 			setSingleRoute(data)
 		})
-
 	}, [])
 
 	if (!singleRoute) return null

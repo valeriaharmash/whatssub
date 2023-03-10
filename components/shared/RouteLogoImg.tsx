@@ -1,5 +1,5 @@
-import {FC} from "react";
-import {Image, StyleSheet} from "react-native";
+import { FC } from "react";
+import { Image, StyleSheet } from "react-native";
 
 const routeImage = {
 	'1': require('../../assets/images/1.png'),

@@ -1,14 +1,13 @@
-import React, {FC, useEffect, useState} from 'react'
-import {View} from "react-native";
-import {AxiosResponse} from 'axios';
-import {ListRoutesResponse, Route} from "../types/api";
-import {StackNavigationProp} from "@react-navigation/stack";
-import {RouteProp} from '@react-navigation/native'
-import {NavParamsMap} from "../navigation/navigation";
-import RouteLogo from "../components/shared/RouteLogo";
-import Container from "../components/shared/Container"
+import React, { FC, useEffect, useState } from 'react'
+import { View } from "react-native";
+import { AxiosResponse } from 'axios';
+import { ListRoutesResponse, Route } from "../types";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RouteProp } from '@react-navigation/native'
+import { NavParamsMap } from "../navigation";
+import { Container, RouteLogo } from "../components";
 import client from "../apis/axios";
-import {sharedStyles} from "../assets/styles";
+import { sharedStyles } from "../assets/styles";
 
 interface P {
 	navigation: StackNavigationProp<NavParamsMap, 'Home'>
@@ -26,7 +25,7 @@ const layout = [
 	["H", "FS", "GS"]
 ];
 
-const Home: FC<P> = ({navigation, route}) => {
+const Home: FC<P> = ({navigation}) => {
 	const [routes, setRoutes] = useState<null | Map<string, Route>>(null)
 
 	useEffect(() => {
@@ -45,9 +44,8 @@ const Home: FC<P> = ({navigation, route}) => {
 
 	if (!routes) return null
 
-
 	let grid = layout.map((row, idx) => {
-			return <View key={idx} style={sharedStyles.row}>{row.map((routeId, idx) => {
+			return <View key={idx} style={sharedStyles.row}>{row.map((routeId) => {
 				let route = routes.get(routeId)!
 				return <RouteLogo
 					description={(routeId === "H" || routeId === "FS" || routeId === "GS") ? route.longName : undefined}

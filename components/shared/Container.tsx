@@ -1,5 +1,5 @@
-import {FC} from "react";
-import {StyleSheet, View} from "react-native";
+import { FC } from "react";
+import { StyleSheet, View } from "react-native";
 
 const styles = StyleSheet.create({
 	container: {

@@ -1,7 +1,7 @@
-import React, {FC} from 'react'
-import {StyleSheet, Text, TouchableOpacity} from "react-native";
+import React, { FC } from 'react'
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import RouteLogoImg from "./RouteLogoImg";
-import {screenWidth} from "../../assets/styles";
+import { screenWidth } from "../../assets/styles";
 
 const styles = StyleSheet.create({
 	container: {

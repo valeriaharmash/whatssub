@@ -1,16 +1,13 @@
-import React, {FC, useEffect, useState} from 'react'
-import {StackNavigationProp} from "@react-navigation/stack";
-import {NavParamsMap} from "../navigation/navigation";
-import {RouteProp} from "@react-navigation/native";
-import {ScrollView, StyleProp, Text, View} from "react-native";
-import {AxiosResponse} from "axios";
-import {Route_Reference, Stop as StopResponse, StopTime, Trip_Reference} from "../types/api";
-import RouteLogo from "../components/shared/RouteLogo";
+import React, { FC, useEffect, useState } from 'react'
+import { StackNavigationProp } from "@react-navigation/stack";
+import { NavParamsMap } from "../navigation";
+import { RouteProp } from "@react-navigation/native";
+import { ScrollView, StyleProp, Text, View } from "react-native";
+import { AxiosResponse } from "axios";
+import { RouteShortInfo, Stop as StopResponse, StopTime, TripShortInfo } from "../types";
 import client from "../apis/axios";
-import RouteLogoImg from "../components/shared/RouteLogoImg";
-import {colors, sharedStyles} from "../assets/styles";
-import Container from "../components/shared/Container"
-import ListItem from "../components/shared/ListItem";
+import { colors, sharedStyles } from "../assets/styles";
+import { Container, ListItem, RouteLogo, RouteLogoImg } from "../components"
 
 interface P {
 	navigation: StackNavigationProp<NavParamsMap, 'Stop'>
@@ -26,7 +23,6 @@ const Stop: FC<P> = ({navigation, route}) => {
 			client.get(`/transiter/v0.6/systems/us-ny-subway/stops/${stopId}`)
 				.then((response: AxiosResponse) => {
 					const stop: StopResponse = response.data
-
 					setStop(stop)
 				})
 		})
@@ -34,25 +30,25 @@ const Stop: FC<P> = ({navigation, route}) => {
 
 	if (!stop) return null;
 
-	let headsignToStopTimes = new Map();
-	for (const headsignRule of stop.headsignRules) {
-		headsignToStopTimes.set(headsignRule.headsign, [])
+	let headSignToStopTimes = new Map();
+	for (const headSignRule of stop.headsignRules) {
+		headSignToStopTimes.set(headSignRule.headsign, [])
 	}
 	for (const stopTime of stop.stopTimes) {
-		let headsign = stopTime.headsign ?? "(terminating trains)"
-		if (!headsignToStopTimes.has(headsign)) {
-			headsignToStopTimes.set(headsign, [])
+		let headSign = stopTime.headsign ?? "(terminating trains)"
+		if (!headSignToStopTimes.has(headSign)) {
+			headSignToStopTimes.set(headSign, [])
 		}
-		headsignToStopTimes.get(headsign).push(stopTime)
+		headSignToStopTimes.get(headSign).push(stopTime)
 	}
 
-	let headsigns = [];
-	for (const [headsign] of headsignToStopTimes) {
-		headsigns.push(headsign);
+	let headSigns = [];
+	for (const [headSign] of headSignToStopTimes) {
+		headSigns.push(headSign);
 	}
-	headsigns.sort();
+	headSigns.sort();
 
-	let routes: Route_Reference[] = [];
+	let routes: RouteShortInfo[] = [];
 	for (const serviceMap of stop.serviceMaps) {
 		if (serviceMap.configId === 'weekday') {
 			serviceMap.routes.forEach(
@@ -63,21 +59,21 @@ const Stop: FC<P> = ({navigation, route}) => {
 	let currentTime = Math.round((new Date()).getTime() / 1000);
 
 	let stopTimes = [];
-	for (const headsign of headsigns) {
+	for (const headSign of headSigns) {
 		stopTimes.push(
-			<HeadsignStopTimes key={headsign} headsign={headsign}
-			                   stopTimes={headsignToStopTimes.get(headsign) ?? []}
+			<HeadSignStopTimes key={headSign} headSign={headSign}
+			                   stopTimes={headSignToStopTimes.get(headSign) ?? []}
 			                   currentTime={currentTime}/>
 		)
 	}
 
 	return (
 		<Container>
-
 			<View style={{display: "flex", alignItems: "center", alignContent: "center"}}>
 				<Text style={{fontSize: 40}}>{stop.name}</Text>
 				<View style={{flexDirection: "row"}}>{
-					routes?.map(route => <RouteLogo
+					routes?.map((route, idx) => <RouteLogo
+						key={idx}
 						routeId={route.id}
 						onPress={() => navigation.push("Route", {routeId: route.id})}/>)
 				}</View>
@@ -89,20 +85,20 @@ const Stop: FC<P> = ({navigation, route}) => {
 	)
 }
 
-type HeadsignStopTimesProps = {
-	headsign: string;
+type HeadSignStopTimesProps = {
+	headSign: string;
 	stopTimes: StopTime[];
 	currentTime: number;
 }
 
-const HeadsignStopTimes: FC<HeadsignStopTimesProps> = ({headsign, stopTimes, currentTime}) => {
+const HeadSignStopTimes: FC<HeadSignStopTimesProps> = ({headSign, stopTimes, currentTime}) => {
 
 	let [maxStopTimes, setMaxStopTimes] = useState(4);
 
 	let children = [];
 	children.push(
 		<Text key="subHeading" style={{color: colors.lightGreen, fontSize: 20, marginBottom: 10}}>
-			{headsign}
+			{headSign}
 		</Text>
 	);
 	let rendered = 0;
@@ -138,7 +134,7 @@ const HeadsignStopTimes: FC<HeadsignStopTimesProps> = ({headsign, stopTimes, cur
 			continue;
 		}
 		rendered += 1
-		let trip: Trip_Reference = stopTime.trip;
+		let trip: TripShortInfo = stopTime.trip;
 		tripStopTimeElements.push(
 			<TripStopTime
 				style={(i % 2) ? {
@@ -162,12 +158,14 @@ const HeadsignStopTimes: FC<HeadsignStopTimesProps> = ({headsign, stopTimes, cur
 	);
 	if (rendered + skipped !== stopTimes.length) {
 		children.push(
-			<View style={{
-				display: "flex",
-				justifyContent: "center",
-				height: 60,
-			}}>
-				<Text key="moreTrips" style={[sharedStyles.title]}
+			<View
+				key="moreTrips"
+				style={{
+					display: "flex",
+					justifyContent: "center",
+					height: 60,
+				}}>
+				<Text style={[sharedStyles.title]}
 				      onPress={() => setMaxStopTimes(maxStopTimes + 4)}>
 					show more trains
 				</Text>
@@ -178,20 +176,20 @@ const HeadsignStopTimes: FC<HeadsignStopTimesProps> = ({headsign, stopTimes, cur
 
 }
 
-interface TSTP {
+interface TripStopTimeP {
 	lastStopName: string,
 	routeId: string,
 	time: any,
 	style: StyleProp<any>
 }
 
-const TripStopTime: FC<TSTP> = ({
-	                                lastStopName,
-	                                routeId,
-	                                time,
-	                                style,
-                                }) => {
-	let displayTime = "";
+const TripStopTime: FC<TripStopTimeP> = ({
+	                                         lastStopName,
+	                                         routeId,
+	                                         time,
+	                                         style,
+                                         }) => {
+	let displayTime;
 	if (time < 30) {
 		displayTime = "Now"
 	} else if (time < 60) {

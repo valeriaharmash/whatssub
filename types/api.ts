@@ -12,18 +12,18 @@ export interface Route {
 	url?: string;
 	sortOrder?: number;
 	type: "SUBWAY";
-	alerts: Alert_Reference[];
+	alerts: Alert[];
 	estimatedHeadway?: number;
-	serviceMaps: Route_ServiceMap[]
+	serviceMaps: RouteServiceMap[]
 }
 
-export interface Alert_Reference {
+export interface Alert {
 	id: string;
-	cause: Alert_Cause;
-	effect: Alert_Effect;
+	cause: AlertCause;
+	effect: AlertEffect;
 }
 
-export enum Alert_Cause {
+export enum AlertCause {
 	UNKNOWN_CAUSE = "UNKNOWN_CAUSE",
 	OTHER_CAUSE = "OTHER_CAUSE",
 	TECHNICAL_PROBLEM = "TECHNICAL_PROBLEM",
@@ -39,7 +39,7 @@ export enum Alert_Cause {
 	UNRECOGNIZED = "UNRECOGNIZED",
 }
 
-export enum Alert_Effect {
+export enum AlertEffect {
 	UNKNOWN_EFFECT = "UNKNOWN_EFFECT",
 	NO_SERVICE = "NO_SERVICE",
 	REDUCED_SERVICE = "REDUCED_SERVICE",
@@ -54,12 +54,12 @@ export enum Alert_Effect {
 	UNRECOGNIZED = "UNRECOGNIZED",
 }
 
-export interface Route_ServiceMap {
+export interface RouteServiceMap {
 	configId: string;
-	stops: Stop_Reference[];
+	stops: StopShortInfo[];
 }
 
-export interface Stop_Reference {
+export interface StopShortInfo {
 	id: string;
 	name?: string;
 }
@@ -67,35 +67,35 @@ export interface Stop_Reference {
 export interface Stop {
 	id: string,
 	name: string,
-	description?: string | undefined;
-	zoneId?: string | undefined;
-	latitude?: number | undefined;
-	longitude?: number | undefined;
-	timezone?: string | undefined;
-	type: Stop_Type;
-	serviceMaps: Stop_ServiceMap[];
-	alerts: Alert_Reference[]
+	description?: string;
+	zoneId?: string;
+	latitude?: number;
+	longitude?: number;
+	timezone?: string;
+	type: StopType;
+	serviceMaps: StopServiceMap[];
+	alerts: Alert[]
 	stopTimes: StopTime[];
-	headsignRules: Stop_HeadsignRule[];
+	headsignRules: StopHeadSign[];
 }
 
 export interface StopTime {
-	stop: Stop_Reference | undefined;
-	arrival: StopTime_EstimatedTime | undefined;
-	departure: StopTime_EstimatedTime | undefined;
+	stop?: StopShortInfo;
+	arrival?: StopTimeEstimated;
+	departure?: StopTimeEstimated;
 	future: boolean;
 	headsign?: string;
 	track?: string;
-	trip: Trip_Reference | undefined;
+	trip?: TripShortInfo;
 }
 
-export interface StopTime_EstimatedTime {
+export interface StopTimeEstimated {
 	time?: number;
 	delay?: number;
 	uncertainty?: number;
 }
 
-export enum Stop_Type {
+export enum StopType {
 	STOP = "STOP",
 	STATION = "STATION",
 	ENTRANCE_OR_EXIT = "ENTRANCE_OR_EXIT",
@@ -104,30 +104,25 @@ export enum Stop_Type {
 	UNRECOGNIZED = "UNRECOGNIZED",
 }
 
-export interface Stop_ServiceMap {
+export interface StopServiceMap {
 	configId: string;
-	routes: Route_Reference[];
+	routes: RouteShortInfo[];
 }
 
-export interface Route_Reference {
+export interface RouteShortInfo {
 	id: string;
 	color: string;
 }
 
-export interface Trip_Reference {
+export interface TripShortInfo {
 	id: string;
-	route: Route_Reference | undefined;
-	destination: Stop_Reference | undefined;
-	vehicle?: Vehicle_Reference | undefined;
+	route?: RouteShortInfo;
+	destination?: StopShortInfo;
 }
 
-export interface Vehicle_Reference {
-	id: string;
-}
-
-export interface Stop_HeadsignRule {
-	stop: Stop_Reference | undefined;
+export interface StopHeadSign {
+	stop?: StopShortInfo;
 	priority: number;
-	track?: string | undefined;
+	track?: string;
 	headsign: string;
 }

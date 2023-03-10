@@ -1,10 +1,8 @@
-import {createStackNavigator} from '@react-navigation/stack';
-import {NavigationContainer,} from '@react-navigation/native'
-import {NavParamsMap} from "./navigation";
-import Home from "../screens/Home";
-import Route from "../screens/Route";
-import Stop from "../screens/Stop";
-import {colors} from "../assets/styles";
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer, } from '@react-navigation/native'
+import { NavParamsMap } from "./navigation";
+import { Home, Route, Stop } from "../screens";
+import { colors } from "../assets/styles";
 
 const Stack = createStackNavigator<NavParamsMap>()
 
@@ -23,4 +21,4 @@ const Navigator = () => {
 	</NavigationContainer>
 }
 
-export {Navigator}
+export { Navigator }

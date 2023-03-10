@@ -1,6 +1,6 @@
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {FC} from "react";
-import {screenWidth, sharedStyles} from "../assets/styles";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FC } from "react";
+import { screenWidth, sharedStyles } from "../assets/styles";
 
 interface P {
 	color: string
@@ -9,6 +9,7 @@ interface P {
 	style: any
 	time?: string
 	lineStyle?: boolean
+
 }
 
 const styles = StyleSheet.create({
@@ -51,6 +52,7 @@ const styles = StyleSheet.create({
 		borderRadius: 50,
 		borderWidth: 2,
 	}
+
 })
 
 const RouteStop: FC<P> = ({name, color, onPress, style, time, lineStyle}) => {

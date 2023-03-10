@@ -1,6 +1,6 @@
-import {FC} from "react";
-import {StyleProp, StyleSheet, View} from "react-native";
-import {screenWidth} from "../../assets/styles";
+import { FC } from "react";
+import { StyleProp, StyleSheet, View } from "react-native";
+import { screenWidth } from "../../assets/styles";
 
 const styles = StyleSheet.create({
 	container: {
