@@ -1,12 +1,13 @@
 import React, { FC, useEffect, useState } from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
 import { NavParamsMap } from "../navigation";
-import { Route as RouteResponse } from "../types";
+import { Alert, Route as RouteResponse } from "../types";
 import client from "../apis/axios";
 import { Container, RouteLogoImg, RouteStop } from "../components";
-import { colors } from "../assets/styles";
+import { colors, sharedStyles } from "../assets/styles";
+import { alertStatusToText, getAlertStatus } from "../utils";
 
 interface P {
 	navigation: StackNavigationProp<NavParamsMap, 'Route'>
@@ -32,6 +33,7 @@ const Route: FC<P> = ({navigation, route}) => {
 		<View>
 			<Container>
 				<RouteLogoImg routeId={routeId}/>
+				<ServiceAlert alerts={singleRoute.alerts} route={singleRoute}/>
 				<ScrollView style={{
 					marginTop: 20,
 					marginBottom: 20
@@ -53,6 +55,26 @@ const Route: FC<P> = ({navigation, route}) => {
 			</Container>
 		</View>
 	)
+}
+
+const ServiceAlert: FC<{ alerts: Alert[], route: RouteResponse }> = ({alerts, route}) => {
+
+	let configIdToServiceMap = new Map();
+	for (const serviceMap of route.serviceMaps) {
+		configIdToServiceMap.set(serviceMap.configId, serviceMap.stops)
+	}
+	let activeStopIds = new Set();
+	for (const stop of configIdToServiceMap.get('realtime')) {
+		activeStopIds.add(stop.id)
+	}
+	let realtimeService = activeStopIds.size > 0
+
+	let status = getAlertStatus(alerts)
+	if (status === "GOOD_SERVICE" && !realtimeService) {
+		status = "NO_SERVICE"
+	}
+
+	return <Text style={sharedStyles.mediumText}>{alertStatusToText(status)}</Text>
 }
 
 export default Route

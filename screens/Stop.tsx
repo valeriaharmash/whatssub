@@ -70,7 +70,7 @@ const Stop: FC<P> = ({navigation, route}) => {
 	return (
 		<Container>
 			<View style={{display: "flex", alignItems: "center", alignContent: "center"}}>
-				<Text style={{fontSize: 40}}>{stop.name}</Text>
+				<Text style={sharedStyles.mediumText}>{stop.name}</Text>
 				<View style={{flexDirection: "row"}}>{
 					routes?.map((route, idx) => <RouteLogo
 						key={idx}
@@ -97,7 +97,7 @@ const HeadSignStopTimes: FC<HeadSignStopTimesProps> = ({headSign, stopTimes, cur
 
 	let children = [];
 	children.push(
-		<Text key="subHeading" style={{color: colors.lightGreen, fontSize: 20, marginBottom: 10}}>
+		<Text key="subHeading" style={{color: colors.primaryColor, fontSize: 20, marginBottom: 10}}>
 			{headSign}
 		</Text>
 	);

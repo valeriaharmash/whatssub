@@ -9,10 +9,16 @@ const Stack = createStackNavigator<NavParamsMap>()
 const Navigator = () => {
 	return <NavigationContainer>
 		<Stack.Navigator initialRouteName={"Home"} screenOptions={{
-			headerStyle: {},
+			headerStyle: {
+				backgroundColor: colors.primaryColor,
+				borderWidth: 1,
+				borderBottomColor: colors.white,
+				borderTopWidth: 0
+			},
 			cardStyle: {
-				backgroundColor: colors.lightGreen
-			}
+				backgroundColor: colors.primaryColor
+			},
+			headerTintColor: colors.white,
 		}}>
 			<Stack.Screen name="Home" component={Home}/>
 			<Stack.Screen name="Route" component={Route}/>

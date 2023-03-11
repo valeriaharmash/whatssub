@@ -1,4 +1,4 @@
-import {Dimensions, StyleSheet} from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
 const screenWidth = Dimensions.get("window").width
 const screenHeight = Dimensions.get("window").height
@@ -13,12 +13,16 @@ const sharedStyles = StyleSheet.create({
 	},
 	center: {
 		alignItems: "center"
+	},
+	mediumText: {
+		fontSize: 30
 	}
 })
 
 const colors = {
-	"lightGreen": "#023e8a",
-	"listItem": "#e3f2fd"
+	"primaryColor": "#023e8a",
+	"listItem": "#e3f2fd",
+	"white": "white"
 }
 
-export {sharedStyles, screenWidth, screenHeight, colors}
+export { sharedStyles, screenWidth, screenHeight, colors }
