@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavParamsMap } from "../navigation";
 import { RouteProp } from "@react-navigation/native";
-import { ScrollView, StyleProp, Text, View } from "react-native";
+import { ScrollView, StyleProp, Text, TouchableOpacity, View } from "react-native";
 import { AxiosResponse } from "axios";
 import { RouteShortInfo, Stop as StopResponse, StopTime, TripShortInfo } from "../types";
 import client from "../apis/axios";
@@ -158,18 +158,19 @@ const HeadSignStopTimes: FC<HeadSignStopTimesProps> = ({headSign, stopTimes, cur
 	);
 	if (rendered + skipped !== stopTimes.length) {
 		children.push(
-			<View
+			<TouchableOpacity
 				key="moreTrips"
 				style={{
 					display: "flex",
 					justifyContent: "center",
 					height: 60,
-				}}>
-				<Text style={[sharedStyles.title]}
-				      onPress={() => setMaxStopTimes(maxStopTimes + 4)}>
+				}}
+				onPress={() => setMaxStopTimes(maxStopTimes + 4)}
+			>
+				<Text style={[sharedStyles.title]}>
 					show more trains
 				</Text>
-			</View>
+			</TouchableOpacity>
 		)
 	}
 	return <View style={{alignItems: "center", marginBottom: 20}}>{children}</View>

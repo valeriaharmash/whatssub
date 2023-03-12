@@ -20,9 +20,9 @@ const sharedStyles = StyleSheet.create({
 })
 
 const colors = {
-	"primaryColor": "#023e8a",
+	"primaryColor": "#2A2A2A",
 	"listItem": "#e3f2fd",
-	"white": "white"
+	"white": "#fff"
 }
 
 export { sharedStyles, screenWidth, screenHeight, colors }
