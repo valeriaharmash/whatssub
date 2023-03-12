@@ -1,15 +1,12 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { FC } from "react";
 import { screenWidth, sharedStyles } from "../assets/styles";
 
 interface P {
-	color: string
 	name: string
 	onPress?: () => void
 	style: any
-	time?: string
-	lineStyle?: boolean
-
+	prefixView?: JSX.Element
 }
 
 const styles = StyleSheet.create({
@@ -25,44 +22,15 @@ const styles = StyleSheet.create({
 		fontSize: 15,
 		paddingTop: 10,
 		paddingBottom: 10,
-		fontWeight: "500"
+		fontWeight: "500",
+		marginLeft: 10
 	},
-	map: {
-		flexDirection: "row",
-		flexShrink: 0,
-		width: 20,
-		position: "relative",
-	},
-	line: {
-		width: 4,
-		left: 8,
-		position: "absolute",
-		top: 0,
-		bottom: 0,
-	},
-	point: {
-		left: 5,
-		top: 25,
-		backgroundColor: "white",
-		width: 10,
-		height: 10,
-		borderStyle: "solid",
-		borderColor: "black",
-		position: "absolute",
-		borderRadius: 50,
-		borderWidth: 2,
-	}
-
 })
 
-const RouteStop: FC<P> = ({name, color, onPress, style, time, lineStyle}) => {
+const RouteStop: FC<P> = ({name, onPress, style, prefixView}) => {
 	return (
 		<TouchableOpacity style={[sharedStyles.row, styles.container, style]} onPress={onPress}>
-			<Text>{time}</Text>
-			{lineStyle && <View style={styles.map}>
-              <View style={[styles.line, {backgroundColor: `#${color}`}]}/>
-              <View style={styles.point}/>
-            </View>}
+			{prefixView && prefixView}
 			<Text style={styles.name}>{name}</Text>
 		</TouchableOpacity>
 	)

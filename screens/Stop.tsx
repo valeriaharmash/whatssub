@@ -7,7 +7,7 @@ import { AxiosResponse } from "axios";
 import { RouteShortInfo, Stop as StopResponse, StopTime, TripShortInfo } from "../types";
 import client from "../apis/axios";
 import { colors, sharedStyles } from "../assets/styles";
-import { Container, ListItem, RouteLogo, RouteLogoImg } from "../components"
+import { Container, RouteLogo, RouteLogoImg, RouteStop } from "../components"
 
 interface P {
 	navigation: StackNavigationProp<NavParamsMap, 'Stop'>
@@ -200,19 +200,19 @@ const TripStopTime: FC<TripStopTimeP> = ({
 	}
 
 	return (
-		<ListItem style={{...sharedStyles.center, padding: 10, ...style}}>
-			<View style={[sharedStyles.row, sharedStyles.center, {justifyContent: "space-between", width: 70}]}>
-				<Text style={{textAlign: "center"}}>{displayTime}</Text>
-				<RouteLogoImg small routeId={routeId}/>
-			</View>
-			<Text style={[{
-				display: "flex",
-				paddingLeft: 10
-			}, sharedStyles.title]}>{lastStopName}</Text>
-
-		</ListItem>
+		<RouteStop
+			name={lastStopName}
+			style={{...sharedStyles.center, padding: 10, ...style}}
+			prefixView={<TimeView routeId={routeId} time={displayTime}/>}
+		/>
 	)
 }
 
+const TimeView: FC<{ routeId: string, time: string }> = ({routeId, time}) => {
+	return <View style={[sharedStyles.row, sharedStyles.center, {justifyContent: "space-between", width: 70}]}>
+		<Text style={{textAlign: "center"}}>{time}</Text>
+		<RouteLogoImg small routeId={routeId}/>
+	</View>
+}
 
 export default Stop;
