@@ -91,7 +91,7 @@ const Route: FC<P> = ({navigation, route}) => {
 							borderRadius: 10,
 						} : {}}
 						name={stop.name!}
-						onPress={() => navigation.navigate("Stop", {stopId: stop.id})}
+						onPress={() => navigation.push("Stop", {stopId: stop.id})}
 					/>)}
 				</ScrollView>
 			</Container>
